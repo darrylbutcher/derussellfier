@@ -84,7 +84,7 @@ class Viewer extends React.Component {
             <Container>
                 <Paper className="Viewer">
                     <Document file={this.state.file}>
-                        <Page pageNumber={pageNumbers[pageIndex]} width={1000} />
+                        <Page pageNumber={pageNumbers[pageIndex]} width={800} />
                     </Document>
                     <div className="Toolbar">
                         <Button
