@@ -7,8 +7,7 @@
   height: 100%;
   padding: 20px;
   overflow: hidden;
-  margin:0 auto;
-  margin-top: 50px;
+  margin:50px auto;
 }
 
 .Viewer {
@@ -19,8 +18,7 @@
   height: 100%;
   padding: 20px;
   overflow: hidden;
-  margin:0 auto;
-  margin-top: 25px;
+  margin:10px auto;
 }
 
 .Content {

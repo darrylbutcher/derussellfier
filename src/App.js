@@ -33,7 +33,6 @@ class App extends React.Component {
     if (this.state.viewer) {
       return (
         <Viewer files={this.state.files} />
-
       )
     } else {
       return (

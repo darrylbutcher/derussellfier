@@ -36,19 +36,30 @@ class Viewer extends React.Component {
         for (let i = 1; i <= doc.numPages; i++) {
             const page = await doc.getPage(i);
             const textContext = await page.getTextContent();
+
             const rawText = textContext.items.map(s => s.str);
             rawText.pop(); // remove page number
+
             if (!rawText.every(e => prevPageText.includes(e))) {
                 uniquePages.push(i - 1);
             }
             prevPageText = rawText;
-
         }
         this.setState({
             pageNumbers: uniquePages,
             loading: false,
             file: file
         })
+    }
+
+    getDimensions() {
+        let width = window.innerWidth - 50;
+        let height = window.innerHeight - 100;
+        if (width * 0.75 < height) {
+            return [width * 0.75, width]
+        } else {
+            return [height, height * 4 / 3]
+        }
     }
 
 
@@ -80,11 +91,12 @@ class Viewer extends React.Component {
         if (this.state.loading) {
             return <div>Loading</div>
         }
+        const dimensions = this.getDimensions();
         return (
             <Container>
                 <Paper className="Viewer">
                     <Document file={this.state.file}>
-                        <Page pageNumber={pageNumbers[pageIndex]} width={800} />
+                        <Page pageNumber={pageNumbers[pageIndex]} height={dimensions[0]} width={dimensions[1]} />
                     </Document>
                     <div className="Toolbar">
                         <Button

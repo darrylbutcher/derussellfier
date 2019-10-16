@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { InputLabel, InputAdornment, FormControl, Input, IconButton, Paper } from '@material-ui/core'
 import { AttachFile, GetApp, Error, Check } from '@material-ui/icons';
+
 class UrlDownload extends Component {
 
     constructor(props) {
@@ -41,7 +42,6 @@ class UrlDownload extends Component {
         const url = "https://cors-anywhere.herokuapp.com/" + this.state.url;
         const split = this.state.url.split("/");
         const fileName = split[split.length - 1];
-        console.log(split);
         //fetch file
         fetch(url, { method: 'GET', headers: { "origin": 'https://people.bath.ac.uk' } })
             .then(response => {
