@@ -29,11 +29,21 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.viewer ? <Viewer files={this.state.files} /> : <Upload addFile={this.addFile} getFiles={this.getFiles} switchView={this.switchView} />}
-      </div>
-    );
+    // I know i should use react router but having multiple pages doesn't work on the static uni server...
+    if (this.state.viewer) {
+      return (
+        <Viewer files={this.state.files} />
+
+      )
+    } else {
+      return (
+        <Upload
+          addFile={this.addFile}
+          getFiles={this.getFiles}
+          switchView={this.switchView}
+        />
+      )
+    }
   }
 }
 

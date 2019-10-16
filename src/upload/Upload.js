@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import Dropzone from "./DropZone";
-import "./Upload.css";
+import UrlDownload from "./UrlDownload";
+
+import { Container, Paper, Button } from '@material-ui/core';
 
 class Upload extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
+      files: []
     };
     this.onFilesAdded = this.onFilesAdded.bind(this);
   }
@@ -19,17 +22,19 @@ class Upload extends Component {
   }
 
   render() {
+    const files = this.props.getFiles();
     return (
-      <div className="Upload">
-        <span className="Title">Upload Files</span>
-        <div className="Content">
-          <div>
-            <Dropzone
-              onFilesAdded={this.props.addFile}
-            />
+      <Container>
+        <Paper className="Upload">
+          <h1>De Russelfier</h1>
+          <div className="Content">
+            <Dropzone onFilesAdded={this.props.addFile} />
+            <h3>or</h3>
+            <UrlDownload addFile={this.props.addFile} />
           </div>
-          <div className="Files">
-            {this.props.getFiles().map(file => {
+          <div className="Content">
+            <h3>Files Loaded</h3>
+            {files.length === 0 ? "No Files" : files.map(file => {
               return (
                 <div key={file.name} className="Row">
                   <span className="Filename">{file.name}</span>
@@ -37,16 +42,19 @@ class Upload extends Component {
               );
             })}
           </div>
-        </div>
-        <div className="Actions">
-        <button
-          disabled={this.props.getFiles() < 0 }
-          onClick={this.props.switchView}
-        >
-          Upload
-        </button>
-        </div>
-      </div>
+
+          <div className="Actions">
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={files.length === 0}
+              onClick={this.props.switchView}
+            >
+              Next
+            </Button>
+          </div>
+        </Paper>
+      </Container>
     );
   }
 }

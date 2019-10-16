@@ -1,8 +1,11 @@
 {
-  "name": "derusselfier",
+  "name": "derussellfier",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.5.1",
+    "@material-ui/icons": "^4.5.1",
+    "@react-pdf/renderer": "^1.6.7",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-pdf": "^4.1.0",

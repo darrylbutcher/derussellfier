@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DeRussellFier",
+  "name": "Small app to condense Russell's slides",
   "icons": [
     {
       "src": "favicon.ico",
