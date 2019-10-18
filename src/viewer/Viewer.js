@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { pdfjs, Document, Page } from "react-pdf";
-import { Container, Paper, Button } from '@material-ui/core';
+import { Container, Paper } from '@material-ui/core';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -21,10 +21,9 @@ class Viewer extends React.Component {
         this.state = {
             loading: true,
             pageNumbers: [],
-            pages: [],
-            pageIndex: 1,
+            dimensions: []
         }
-        this.download = this.download.bind(this);
+        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     async componentDidMount() {
@@ -45,77 +44,38 @@ class Viewer extends React.Component {
             }
             prevPageText = rawText;
         }
+        window.addEventListener('resize', this.updateDimensions);
         this.setState({
-            pageNumbers: uniquePages,
+            pageNumbers: uniquePages.slice(1), // TODO fix bug inserting null first page
             loading: false,
-            file: file
+            file: file,
         })
+        this.updateDimensions();
     }
 
-    getDimensions() {
+    updateDimensions() {
         let width = window.innerWidth - 50;
         let height = window.innerHeight - 100;
         if (width * 0.75 < height) {
-            return [width * 0.75, width]
+            this.setState({ dimensions: [width * 0.75, width] })
         } else {
-            return [height, height * 4 / 3]
+            this.setState({ dimensions: [height, height * 4 / 3] });
         }
-    }
-
-
-    goToPrevPage = () => this.setState(state => ({ pageIndex: state.pageIndex - 1 }));
-
-    goToNextPage = () =>
-        this.setState(state => ({ pageIndex: state.pageIndex + 1 }));
-
-    download = () => {
-        const file = this.state.file;
-        var binary = atob(file.substring(file.indexOf(",") + 1));
-        var len = binary.length;
-        var buffer = new ArrayBuffer(len);
-        var view = new Uint8Array(buffer);
-        for (var i = 0; i < len; i++) {
-            view[i] = binary.charCodeAt(i);
-        }
-        var blob = new Blob([view], { type: "application/pdf" });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", "test.pdf");
-        document.body.appendChild(link);
-        link.click();
     }
 
     render() {
-        const { pageIndex, pageNumbers } = this.state;
-        if (this.state.loading) {
+        const { loading, file, pageNumbers, dimensions } = this.state;
+        if (loading) {
             return <div>Loading</div>
         }
-        const dimensions = this.getDimensions();
         return (
             <Container>
                 <Paper className="Viewer">
-                    <Document file={this.state.file}>
-                        <Page pageNumber={pageNumbers[pageIndex]} height={dimensions[0]} width={dimensions[1]} />
+                    <Document file={file}>
+                        <div style={{ height: dimensions[0], overflow: 'auto' }}>
+                            {pageNumbers.map(n => <Page pageNumber={n} height={dimensions[0]} width={dimensions[1]} />)}
+                        </div>
                     </Document>
-                    <div className="Toolbar">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.goToPrevPage}
-                            disabled={pageIndex === 1}
-                        >
-                            Prev
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.goToNextPage}
-                            disabled={pageIndex === pageNumbers.length - 1}
-                        >
-                            Next
-                        </Button>
-                    </div>
                 </Paper>
             </Container>
         );
