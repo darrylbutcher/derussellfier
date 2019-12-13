@@ -44,6 +44,7 @@ class Viewer extends React.Component {
             }
             prevPageText = rawText;
         }
+        uniquePages.push(doc.numPages);
         window.addEventListener('resize', this.updateDimensions);
         this.setState({
             pageNumbers: uniquePages.slice(1), // TODO fix bug inserting null first page
