@@ -39,11 +39,10 @@ class UrlDownload extends Component {
     }
 
     downloadFile() {
-        const url = "https://cors-anywhere.herokuapp.com/" + this.state.url;
         const split = this.state.url.split("/");
         const fileName = split[split.length - 1];
         //fetch file
-        fetch(url, { method: 'GET', headers: { "origin": 'https://people.bath.ac.uk' } })
+        fetch(this.state.url, { method: 'GET' })
             .then(response => {
                 if (response.status !== 200) {
                     this.setState({ status: 'error' });
